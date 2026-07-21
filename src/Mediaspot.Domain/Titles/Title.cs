@@ -1,5 +1,4 @@
-﻿using Mediaspot.Domain.Assets;
-using Mediaspot.Domain.Common;
+﻿using Mediaspot.Domain.Common;
 using Mediaspot.Domain.Titles.ValueObjects;
 
 namespace Mediaspot.Domain.Titles;
@@ -22,6 +21,13 @@ public sealed class Title : AggregateRoot
         ReleaseDate = releaseDate;
         Type = type;
     }
+
+#pragma warning disable
+    public Title()
+    {
+        
+    }
+#pragma warning enable
 
     public static Title Create(
         TitleName name,

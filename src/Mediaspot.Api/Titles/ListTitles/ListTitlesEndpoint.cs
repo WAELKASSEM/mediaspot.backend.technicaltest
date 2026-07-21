@@ -1,4 +1,5 @@
-using Mediaspot.Api.Titles.DTOs;
+using Mediaspot.Api.Titles.GetTitleById;
+using Mediaspot.Application.Titles.Queries.List;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,8 +17,11 @@ public static class ListTitlesEndpoint
         return endpoints;
     }
 
-    private static Task<IResult> ListTitlesAsync([FromServices] ISender store)
+    private static async Task<IResult> ListTitlesAsync([FromQuery] Guid? lastSeen, [FromQuery] int? pageSize, [FromServices] ISender sender)
     {
-        throw new NotImplementedException();
+        var query = new ListTitlesQuery(lastSeen, pageSize);
+        var result = await sender.Send(query);
+        return Results.Ok(result.Select(title => title.ToDto()));
+
     }
 }

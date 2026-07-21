@@ -4,6 +4,10 @@ public sealed class TitleDescription
 {
     public string? Value { get; }
 
+    private TitleDescription()
+    {
+    }
+
     public TitleDescription(string? value)
     {
         if (value is { Length: > 2000 })

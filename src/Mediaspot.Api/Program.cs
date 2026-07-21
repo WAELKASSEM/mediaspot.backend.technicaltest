@@ -1,4 +1,5 @@
 using Mediaspot.Api;
+using Mediaspot.Api.ExceptionHandling;
 using Mediaspot.Infrastructure;
 using Mediaspot.Infrastructure.Persistence;
 
@@ -8,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
 
 builder.Services.AddInfrastructure("Mediaspot.Backend.TechnicalTest");
 
@@ -25,7 +29,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseExceptionHandler();
 app.UseHttpsRedirection();
 app.MapResourcesEndpoints();
 app.Run();

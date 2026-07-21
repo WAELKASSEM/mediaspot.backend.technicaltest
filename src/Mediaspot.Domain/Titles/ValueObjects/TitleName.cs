@@ -3,7 +3,12 @@
 public sealed class TitleName
 {
     public string Value { get; }
-
+#pragma warning disable
+    private TitleName()
+    {
+        
+    }
+#pragma warning enable
     public TitleName(string value)
     {
         if (string.IsNullOrWhiteSpace(value))

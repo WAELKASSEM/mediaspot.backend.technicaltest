@@ -1,4 +1,5 @@
-using Mediaspot.Api.Titles.DTOs;
+using Mediaspot.Application.Titles.Queries.GetById;
+using Mediaspot.Domain.Titles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,8 +17,10 @@ public static class GetTitleEndpoint
         return endpoints;
     }
 
-    private static Task<IResult> GetTitleAsync([FromRoute] Guid id, [FromServices] ISender store)
+    private static async Task<IResult> GetTitleAsync([FromRoute] Guid id, [FromServices] ISender store)
     {
-        throw new NotImplementedException();
+        Title title = await store.Send(new GetTitleByIdQuery(id));
+        var dto = title.ToDto();
+        return Results.Ok(dto);
     }
 }

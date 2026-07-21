@@ -1,3 +1,4 @@
+using Mediaspot.Application.Titles.Commands.Create;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,11 @@ public static class CreateTitleEndpoint
         return endpoints;
     }
 
-    private static Task<IResult> CreateTitleAsync([FromBody] CreateTitleDto dto, [FromServices] ISender store)
+    private static async Task<IResult> CreateTitleAsync([FromBody] CreateTitleDto dto, [FromServices] ISender sender)
     {
-        throw new NotImplementedException();
+        CreateTitleCommand command = dto.ToCommand();
+        Guid id = await sender.Send(command, CancellationToken.None);
+        return Results.Created("/titles",id);
+
     }
 }

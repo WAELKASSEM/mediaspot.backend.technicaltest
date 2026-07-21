@@ -2,7 +2,7 @@
 using Mediaspot.Domain.Transcoding;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mediaspot.Infrastructure.Persistence;
+namespace Mediaspot.Infrastructure.Persistence.Transcoding;
 
 public sealed class TranscodeJobRepository(MediaspotDbContext db) : ITranscodeJobRepository
 {

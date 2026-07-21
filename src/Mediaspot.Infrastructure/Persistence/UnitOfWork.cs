@@ -9,6 +9,21 @@ public sealed class UnitOfWork(MediaspotDbContext db, IPublisher publisher) : IU
     private readonly MediaspotDbContext _db = db;
     private readonly IPublisher _publisher = publisher;
 
+    public Task BeginTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task CommitTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task RollbackTransactionAsync(CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task<int> SaveChangesAsync(CancellationToken ct = default)
     {
         // Gather all domain events from tracked aggregates

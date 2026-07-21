@@ -1,3 +1,4 @@
+using Mediaspot.Application.Titles.Commands.Update;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,8 +16,10 @@ public static class UpdateTitleEndpoint
         return endpoints;
     }
 
-    private static Task<IResult> UpdateTitleAsync([FromRoute] Guid id, [FromBody] UpdateTitleDto dto, [FromServices] ISender store)
+    private static async Task<IResult> UpdateTitleAsync([FromRoute] Guid id, [FromBody] UpdateTitleDto dto, [FromServices] ISender sender)
     {
-        throw new NotImplementedException();
+        UpdateTitleCommand command = dto.ToCommand(id);
+        Guid updateId = await sender.Send(command);
+        return Results.Ok<Guid>(updateId);
     }
 }
