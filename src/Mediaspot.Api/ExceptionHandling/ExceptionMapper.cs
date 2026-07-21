@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Application.Common.Exceptions;
 using Mediaspot.Application.Titles.Exceptions;
+using Mediaspot.Domain.Transcoding.Exceptions;
 using System.Net;
 
 namespace Mediaspot.Api.ExceptionHandling;
@@ -12,6 +13,7 @@ public static class ExceptionMapper
         {
             TitleAlreadyExistsException => HttpStatusCode.BadRequest,
             EntityNotFoundException => HttpStatusCode.NotFound,
+            InvalidTranscodeStatusException => HttpStatusCode.BadRequest,
             _ => HttpStatusCode.InternalServerError
         };
     }

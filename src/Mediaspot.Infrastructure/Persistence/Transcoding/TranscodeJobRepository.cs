@@ -10,4 +10,28 @@ public sealed class TranscodeJobRepository(MediaspotDbContext db) : ITranscodeJo
 
     public Task<bool> HasActiveJobsAsync(Guid assetId, CancellationToken ct)
         => db.TranscodeJobs.AnyAsync(j => j.AssetId == assetId && (j.Status == TranscodeStatus.Pending || j.Status == TranscodeStatus.Running), ct);
+
+    public async Task<TranscodeJob?> GetAsync(Guid jobId, CancellationToken ct)
+        => await db.TranscodeJobs.AsNoTracking().FirstOrDefaultAsync(j => j.Id == jobId, ct);
+
+    public Task UpdateAsync(TranscodeJob job, CancellationToken ct)
+    {
+        db.TranscodeJobs.Attach(job);
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveAsync(TranscodeJob entity, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<IEnumerable<TranscodeJob>> ListAsync(PageSize size, Guid? lastSeen = null, CancellationToken cancellationToken = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<TranscodeJob?> GetNextPendingAsync(CancellationToken ct)
+    {
+        return db.TranscodeJobs.FirstOrDefaultAsync(j => j.Status == TranscodeStatus.Pending, ct);
+    }
 }

@@ -10,7 +10,7 @@ public sealed class TranscodeRequestedHandler(ITranscodeJobRepository repo, IUni
 {
     public async Task Handle(TranscodeRequested @event, CancellationToken ct)
     {
-        var job = new TranscodeJob(@event.AssetId, @event.MediaFileId, @event.TargetPreset);
+        var job = new TranscodeJob(@event.AssetId, @event.MediaFileId, new(@event.TargetPreset));
         await repo.AddAsync(job, ct);
         await uow.SaveChangesAsync(ct);
     }

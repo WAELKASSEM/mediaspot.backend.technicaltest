@@ -1,10 +1,7 @@
 ﻿using Mediaspot.Domain.Transcoding;
+using Mediaspot.Domain.Transcoding.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Text;
 
 namespace Mediaspot.Infrastructure.Persistence.Transcoding;
 
@@ -13,7 +10,11 @@ internal sealed class TranscodeJobConfiguration : IEntityTypeConfiguration<Trans
     public void Configure(EntityTypeBuilder<TranscodeJob> b)
     {
         b.HasKey(j => j.Id);
-        b.Property(j => j.Preset).IsRequired();
+        b.Property(j => j.Preset)
+            .HasConversion(
+                preset => preset.Value,
+                value => new Preset(value))
+            .IsRequired();
         b.Property(j => j.Status);
         b.HasIndex(j => new { j.AssetId, j.Status });
     }

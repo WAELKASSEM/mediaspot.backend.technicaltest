@@ -20,7 +20,7 @@ public class TranscodeRequestedHandlerTests
 
         await handler.Handle(evt, CancellationToken.None);
 
-        repo.Verify(r => r.AddAsync(It.Is<TranscodeJob>(j => j.AssetId == evt.AssetId && j.MediaFileId == evt.MediaFileId && j.Preset == evt.TargetPreset), It.IsAny<CancellationToken>()), Times.Once);
+        repo.Verify(r => r.AddAsync(It.Is<TranscodeJob>(j => j.AssetId == evt.AssetId && j.MediaFileId == evt.MediaFileId && j.Preset.Value == evt.TargetPreset), It.IsAny<CancellationToken>()), Times.Once);
         uow.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
     }
 }
