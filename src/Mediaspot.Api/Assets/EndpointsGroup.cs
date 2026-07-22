@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Api.Assets.ArchiveAsset;
-using Mediaspot.Api.Assets.CreateAsset;
+using Mediaspot.Api.Assets.CreateAsset.CreateAudioAsset;
+using Mediaspot.Api.Assets.CreateAsset.CreateVideoAsset;
 using Mediaspot.Api.Assets.GetAssetById;
 using Mediaspot.Api.Assets.RegisterMediaFile;
 using Mediaspot.Api.Assets.UpdateMetatdata;
@@ -15,7 +16,8 @@ public static class EndpointsGroup
             .WithTags("Assets");
 
         group.MapGetAssetByIdQueryEndpoint();
-        group.MapCreateAssetCommandEndpoint();
+        group.MapCreateVideoAssetCommandEndpoint();
+        group.MapCreateAudioAssetCommandEndpoint();
         group.MapRegisterMediaFileCommandEndpoint();
         group.MapUpdateMetadataCommandEndpoint();
         group.MapArchiveAssetCommandEndpoint();

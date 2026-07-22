@@ -1,6 +1,5 @@
 using Mediaspot.Api;
 using Mediaspot.Api.ExceptionHandling;
-using Mediaspot.Infrastructure;
 using Mediaspot.Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);

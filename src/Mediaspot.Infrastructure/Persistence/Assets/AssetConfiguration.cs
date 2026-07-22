@@ -1,5 +1,7 @@
 ﻿using Mediaspot.Domain.Assets;
+using Mediaspot.Domain.Assets.AudioAssets;
 using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.Domain.Assets.VideoAssets;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -43,4 +45,32 @@ internal sealed class AssetConfiguration : IEntityTypeConfiguration<Asset>
         b.HasIndex(a => a.ExternalId).IsUnique();
     }
 
+}
+internal sealed class VideoAssetConfiguration : IEntityTypeConfiguration<VideoAsset>
+{
+    public void Configure(EntityTypeBuilder<VideoAsset> b)
+    {
+
+        b.OwnsOne(
+            x => x.Resolution,
+            resolution =>
+            {
+                resolution.Property(x => x.Width)
+                    .HasColumnName("Width")
+                    .IsRequired();
+
+                resolution.Property(x => x.Height)
+                    .HasColumnName("Height")
+                    .IsRequired();
+            });
+        b.Property(x => x.Duration).HasConversion(x => x.Value, v => new Duration(v)).HasColumnName("Duration").IsRequired();
+
+    }
+}
+internal sealed class AudioAssetConfiguration : IEntityTypeConfiguration<AudioAsset>
+{
+    public void Configure(EntityTypeBuilder<AudioAsset> b)
+    {
+        b.Property(x => x.Duration).HasConversion(x => x.Value, v => new Duration(v)).HasColumnName("Duration").IsRequired();
+    }
 }

@@ -2,5 +2,5 @@
 
 public sealed record MediaFileId(Guid Value)
 {
-    public static MediaFileId New() => new(Guid.NewGuid());
+    public static MediaFileId New() => new(Guid.CreateVersion7());
 }

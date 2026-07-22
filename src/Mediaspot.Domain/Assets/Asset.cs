@@ -4,23 +4,22 @@ using Mediaspot.Domain.Common;
 
 namespace Mediaspot.Domain.Assets;
 
-public sealed class Asset : AggregateRoot
+public abstract class Asset : AggregateRoot
 {
     private readonly List<MediaFile> _mediaFiles = [];
 
-    public string ExternalId { get; private set; }
-    public Metadata Metadata { get; private set; }
-    public bool Archived { get; private set; }
+    public string ExternalId { get; protected set; }
+    public Metadata Metadata { get; protected set; }
+    public bool Archived { get; protected set; }
 
     public IReadOnlyCollection<MediaFile> MediaFiles => _mediaFiles.AsReadOnly();
 
-    private Asset() { ExternalId = string.Empty; Metadata = new("", null, null); }
+    protected Asset() { ExternalId = string.Empty; Metadata = new("", null, null); }
 
     public Asset(string externalId, Metadata metadata)
     {
         ExternalId = externalId;
         Metadata = metadata;
-        Raise(new AssetCreated(Id));
     }
 
     public MediaFile RegisterMediaFile(FilePath path, Duration duration)
