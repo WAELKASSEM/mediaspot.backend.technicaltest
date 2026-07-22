@@ -19,6 +19,7 @@ public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> opti
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(MediaspotDbContext).Assembly);
     }
 }

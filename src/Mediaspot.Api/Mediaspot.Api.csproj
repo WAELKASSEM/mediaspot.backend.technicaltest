@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Mediaspot.Application\Mediaspot.Application.csproj" />
+    <ProjectReference Include="..\Mediaspot.Backend.TechnicalTest.Local.ServiceDefaults\Mediaspot.Backend.TechnicalTest.Local.ServiceDefaults.csproj" />
     <ProjectReference Include="..\Mediaspot.Infrastructure\Mediaspot.Infrastructure.csproj" />
   </ItemGroup>
 

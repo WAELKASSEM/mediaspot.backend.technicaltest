@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.5.11723.231 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediaspot.Domain", "src\Mediaspot.Domain\Mediaspot.Domain.csproj", "{D17D1C24-DCD9-44B3-A811-273572040490}"
 EndProject
@@ -18,6 +18,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediaspot.UnitTests", "tests\Mediaspot.UnitTests\Mediaspot.UnitTests.csproj", "{491AAF6C-1AC5-4E15-88B6-3DCECF5DAD4B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediaspot.Api", "src\Mediaspot.Api\Mediaspot.Api.csproj", "{6D4A091F-C214-4D0B-A9F8-5CBB1EF2BCA1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediaspot.Backend.TechnicalTest.Local.AppHost", "src\Mediaspot.Backend.TechnicalTest.Local.AppHost\Mediaspot.Backend.TechnicalTest.Local.AppHost.csproj", "{71421E85-FB0B-4676-BDC7-9D16F478008E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediaspot.Backend.TechnicalTest.Local.ServiceDefaults", "src\Mediaspot.Backend.TechnicalTest.Local.ServiceDefaults\Mediaspot.Backend.TechnicalTest.Local.ServiceDefaults.csproj", "{BE771A22-BD16-705F-213D-1C04F676C2A2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hosting", "Hosting", "{53670BAE-CE16-47E0-8E9D-01A41EE60EB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mediaspot.IntegrationTests", "Mediaspot.IntegrationTests\Mediaspot.IntegrationTests.csproj", "{F21EE053-79F9-42D0-817A-481BBA125B26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +57,18 @@ Global
 		{6D4A091F-C214-4D0B-A9F8-5CBB1EF2BCA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D4A091F-C214-4D0B-A9F8-5CBB1EF2BCA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D4A091F-C214-4D0B-A9F8-5CBB1EF2BCA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71421E85-FB0B-4676-BDC7-9D16F478008E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71421E85-FB0B-4676-BDC7-9D16F478008E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71421E85-FB0B-4676-BDC7-9D16F478008E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71421E85-FB0B-4676-BDC7-9D16F478008E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE771A22-BD16-705F-213D-1C04F676C2A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE771A22-BD16-705F-213D-1C04F676C2A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE771A22-BD16-705F-213D-1C04F676C2A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE771A22-BD16-705F-213D-1C04F676C2A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F21EE053-79F9-42D0-817A-481BBA125B26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F21EE053-79F9-42D0-817A-481BBA125B26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F21EE053-79F9-42D0-817A-481BBA125B26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F21EE053-79F9-42D0-817A-481BBA125B26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +80,10 @@ Global
 		{79414CFB-BE20-4557-AD03-50E3EF998F79} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{491AAF6C-1AC5-4E15-88B6-3DCECF5DAD4B} = {DC28B4C6-BB24-4B0C-875F-D7FDAFA6131B}
 		{6D4A091F-C214-4D0B-A9F8-5CBB1EF2BCA1} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{71421E85-FB0B-4676-BDC7-9D16F478008E} = {53670BAE-CE16-47E0-8E9D-01A41EE60EB4}
+		{BE771A22-BD16-705F-213D-1C04F676C2A2} = {53670BAE-CE16-47E0-8E9D-01A41EE60EB4}
+		{53670BAE-CE16-47E0-8E9D-01A41EE60EB4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F21EE053-79F9-42D0-817A-481BBA125B26} = {DC28B4C6-BB24-4B0C-875F-D7FDAFA6131B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ACBF7A55-F162-4602-A6B7-F0389A03CCAD}
