@@ -10,12 +10,12 @@ namespace Mediaspot.Infrastructure.Persistence;
 
 public sealed class MediaspotDbContext(DbContextOptions<MediaspotDbContext> options) : DbContext(options)
 {
-    public DbSet<Asset> Assets => Set<Asset>();
-    public DbSet<VideoAsset> VideoAssets => Set<VideoAsset>();
-    public DbSet<AudioAsset> AudioAssets => Set<AudioAsset>();
-    public DbSet<TranscodeJob> TranscodeJobs => Set<TranscodeJob>();
+    public DbSet<Asset> Assets { get; set;  }
+    public DbSet<VideoAsset> VideoAssets { get; set; }
+    public DbSet<AudioAsset> AudioAssets { get; set; }
+    public DbSet<TranscodeJob> TranscodeJobs { get; set; }
 
-    public DbSet<Title> Titles => Set<Title>();
+    public DbSet<Title> Titles { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

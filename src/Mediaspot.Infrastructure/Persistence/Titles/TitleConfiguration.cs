@@ -21,20 +21,23 @@ public sealed class TitleConfiguration : IEntityTypeConfiguration<Title>
                 name => name.Value,
                 value => new TitleName(value))
             .HasMaxLength(200)
-            .IsRequired();
+            .HasColumnType("citext");
+        builder.HasIndex(x => x.Name)
+            .IsUnique();
+
+
+
 
         builder.Property(x => x.Description)
             .HasConversion(
-                description => description.Value,
+                description => description == null ? null : description.Value,
                 value => new TitleDescription(value))
-            .HasMaxLength(4000)
-            .IsRequired();
+            .HasMaxLength(4000);
 
         builder.Property(x => x.ReleaseDate)
             .HasConversion(
-                releaseDate => releaseDate.Value,
-                value => new(value))
-            .IsRequired();
+                releaseDate => releaseDate == null ? null : releaseDate.Value,
+                value => new(value));
 
         builder.Property(x => x.Type)
             .HasConversion<string>()

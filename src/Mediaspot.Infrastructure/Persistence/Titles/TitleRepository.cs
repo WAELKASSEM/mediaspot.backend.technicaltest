@@ -1,6 +1,7 @@
 ﻿using Mediaspot.Application.Common;
 using Mediaspot.Application.Titles;
 using Mediaspot.Domain.Titles;
+using Mediaspot.Domain.Titles.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Mediaspot.Infrastructure.Persistence.Titles;
@@ -19,7 +20,8 @@ internal class TitleRepository(MediaspotDbContext db) : ITitleRepository
 
     public Task<Title?> GetByNameAsync(string name, CancellationToken ct = default)
     {
-        return db.Titles.AsNoTracking().FirstOrDefaultAsync(x => x.Name.Value == name, ct);
+        var vo = new TitleName(name);
+        return db.Titles.AsNoTracking().FirstOrDefaultAsync(x => x.Name == vo, ct);
     }
 
     public Task RemoveAsync(Title entity, CancellationToken cancellationToken = default)

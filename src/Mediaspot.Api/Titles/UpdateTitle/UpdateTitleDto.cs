@@ -1,9 +1,10 @@
+using Mediaspot.Api.Titles.GetTitleById;
 using Mediaspot.Application.Titles.Commands.Update;
 using Mediaspot.Domain.Titles.ValueObjects;
 
 namespace Mediaspot.Api.Titles.UpdateTitle;
 
-public record UpdateTitleDto(string? Name, TitleType? Type, string? Description, DateTime? ReleaseDate);
+public record UpdateTitleDto(string? Name, TitleTypeDto? Type, string? Description, DateOnly? ReleaseDate);
 public static class UpdateTitleDtoExtensions
 {
     public static UpdateTitleCommand ToCommand(this UpdateTitleDto dto, Guid id)
@@ -11,8 +12,8 @@ public static class UpdateTitleDtoExtensions
         return new UpdateTitleCommand(
             Id: id,
             Name: dto.Name,
-            Type: dto.Type,
+            Type: dto.Type == null ? null : Enum.Parse<TitleType>(dto.Type.Value.ToString()),
             Description: dto.Description,
-            ReleaseDate: dto.ReleaseDate.HasValue ? DateOnly.FromDateTime(dto.ReleaseDate.Value) : null);
+            ReleaseDate: dto.ReleaseDate);
     }
 }

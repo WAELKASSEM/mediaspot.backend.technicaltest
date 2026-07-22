@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Application.Common;
 using Mediaspot.Application.Common.Exceptions;
+using Mediaspot.Application.Titles.Exceptions;
 using Mediaspot.Domain.Titles;
 using MediatR;
 
@@ -9,10 +10,16 @@ public sealed class UpdateTitleHandler(ITitleRepository repo, IUnitOfWork uow) :
 {
     public async Task<Guid> Handle(UpdateTitleCommand request, CancellationToken cancellationToken)
     {
-        Title title = await repo.GetAsync(id: request.Id,cancellationToken) ?? throw EntityNotFoundException.ForType<Title>(request.Id);
-        
+        Title title = await repo.GetAsync(id: request.Id, cancellationToken) ?? throw EntityNotFoundException.ForType<Title>(request.Id);
+
         if (request.Name is not null)
+        {
+            Title? existing = await repo.GetByNameAsync(request.Name, cancellationToken);
+            if (existing is not null && existing.Id != title.Id)
+                throw TitleAlreadyExistsException.ForNameConflict(request.Name);
             title.Rename(new(request.Name));
+        }
+
 
         if (request.Description is not null)
             title.ChangeDescription(new(request.Description));

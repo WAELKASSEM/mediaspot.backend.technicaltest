@@ -6,14 +6,14 @@ namespace Mediaspot.Domain.Titles;
 public sealed class Title : AggregateRoot
 {
     public TitleName Name { get; private set; }
-    public TitleDescription Description { get; private set; }
-    public ReleaseDate ReleaseDate { get; private set; }
+    public TitleDescription? Description { get; private set; }
+    public ReleaseDate? ReleaseDate { get; private set; }
     public TitleType Type { get; private set; }
 
     private Title(
         TitleName name,
-        TitleDescription description,
-        ReleaseDate releaseDate,
+        TitleDescription? description,
+        ReleaseDate? releaseDate,
         TitleType type)
     {
         Name = name;
@@ -31,8 +31,8 @@ public sealed class Title : AggregateRoot
 
     public static Title Create(
         TitleName name,
-        TitleDescription description,
-        ReleaseDate releaseDate,
+        TitleDescription? description,
+        ReleaseDate? releaseDate,
         TitleType type)
     {
         return new Title(name, description, releaseDate, type);

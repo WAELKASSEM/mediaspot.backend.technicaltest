@@ -11,7 +11,7 @@ public static class ExceptionMapper
     {
         return exception switch
         {
-            TitleAlreadyExistsException => HttpStatusCode.BadRequest,
+            TitleAlreadyExistsException => HttpStatusCode.Conflict,
             EntityNotFoundException => HttpStatusCode.NotFound,
             InvalidTranscodeStatusException => HttpStatusCode.BadRequest,
             _ => HttpStatusCode.InternalServerError
