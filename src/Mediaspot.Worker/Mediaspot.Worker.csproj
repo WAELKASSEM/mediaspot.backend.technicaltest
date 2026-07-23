@@ -14,7 +14,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Mediaspot.Application\Mediaspot.Application.csproj" />
 		<ProjectReference Include="..\Mediaspot.Infrastructure\Mediaspot.Infrastructure.csproj" />
 	</ItemGroup>
 

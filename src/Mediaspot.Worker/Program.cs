@@ -10,7 +10,8 @@ var builder = Host.CreateApplicationBuilder(args);
 
 var connectionString = builder.Configuration.GetConnectionString("Database")!;
 var rabbitMqConnectionString = builder.Configuration.GetConnectionString("Queuing")!;
-var apiBaseUrl = builder.Configuration["Api__BaseUrl"]!;
+var apiBaseUrl = Environment.GetEnvironmentVariable("MEDIASPOT_API_HTTPS")!;
+
 
 builder.Services.AddHttpClient<MediaSpotApiClient>(client =>
 {

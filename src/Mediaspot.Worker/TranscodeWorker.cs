@@ -18,6 +18,7 @@ public sealed class TranscodeWorker(
     ITranscodeJobRepository transcodeJobRepository,
     IAssetRepository assetRepository,
     AssetTranscoderFactory transcoderFactory,
+    MediaSpotApiClient mediaSpotApiClient,
     ISender sender,
     ILogger<TranscodeWorker> logger)
 {
@@ -31,15 +32,16 @@ public sealed class TranscodeWorker(
             durable: true,
             exclusive: false,
             autoDelete: false,
-            cancellationToken:ct);
+            cancellationToken: ct);
 
         var consumer = new AsyncEventingBasicConsumer(channel);
 
         consumer.ReceivedAsync += async (_, ea) =>
         {
             var message = Encoding.UTF8.GetString(ea.Body.ToArray());
+            var jobId = Guid.Parse(message);
 
-            Console.WriteLine($"Received: {message}");
+            await Transcode(jobId, ct);
 
             await channel.BasicAckAsync(
                 deliveryTag: ea.DeliveryTag,
@@ -50,79 +52,60 @@ public sealed class TranscodeWorker(
             queue: "transcode-jobs",
             autoAck: false,
             consumer: consumer
-            ,ct);
+            , ct);
 
         Console.WriteLine("Listening for messages...");
 
-        await Task.Delay(Timeout.Infinite,ct);
+        await Task.Delay(Timeout.Infinite, ct);
     }
 
-    public async Task RunAsync(CancellationToken ct)
+    private async Task Transcode(Guid jobId, CancellationToken ct)
     {
-
-
-
-        logger.LogInformation("Transcode worker started.");
-
-        while (!ct.IsCancellationRequested)
+        try
         {
-            var job = await transcodeJobRepository
-                .GetNextPendingAsync(ct);
+            logger.LogInformation(
+                "Processing transcode job {JobId}",
+                jobId);
 
-            if (job is null)
-            {
-                await Task.Delay(1000, ct);
-                continue;
-            }
+            var job = await transcodeJobRepository.GetAsync(jobId);
 
-            try
-            {
-                logger.LogInformation(
-                    "Processing transcode job {JobId}",
-                    job.Id);
 
-                await sender.Send(
-                    new StartTranscodeJobCommand(job.Id),
+            var startResult = await mediaSpotApiClient.PutAsync($"/transcode-jobs/{job.Id}/start");
+            startResult.EnsureSuccessStatusCode();
+
+            var asset =
+                await assetRepository.GetAsync(
+                    job.AssetId,
                     ct);
 
-                var asset =
-                    await assetRepository.GetAsync(
-                        job.AssetId,
-                        ct);
+            if (asset is null)
+                throw new InvalidOperationException(
+                    $"Asset '{job.AssetId}' not found.");
 
-                if (asset is null)
-                    throw new InvalidOperationException(
-                        $"Asset '{job.AssetId}' not found.");
+            var transcoder =
+                transcoderFactory.Resolve(asset);
 
-                var transcoder =
-                    transcoderFactory.Resolve(asset);
+            await transcoder.ExecuteAsync(
+                asset,
+                job,
+                ct);
 
-                await transcoder.ExecuteAsync(
-                    asset,
-                    job,
-                    ct);
+            var completeResult = await mediaSpotApiClient.PutAsync($"/transcode-jobs/{job.Id}/complete");
+            completeResult.EnsureSuccessStatusCode();
 
-                await sender.Send(
-                    new CompleteTranscodeJobCommand(job.Id),
-                    ct);
-
-                logger.LogInformation(
-                    "Transcode job {JobId} completed",
-                    job.Id);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(
-                    ex,
-                    "Error while processing job {JobId}",
-                    job.Id);
-
-                await sender.Send(
-                    new FailTranscodeJobCommand(
-                        job.Id,
-                        ex.Message),
-                    ct);
-            }
+            logger.LogInformation(
+                "Transcode job {JobId} completed",
+                job.Id);
         }
+        catch (Exception ex)
+        {
+            logger.LogError(
+                ex,
+                "Error while processing job {JobId}",
+                jobId);
+
+            await mediaSpotApiClient.PutAsync($"/transcode-jobs/{jobId}/failed");
+        }
+
     }
 }
