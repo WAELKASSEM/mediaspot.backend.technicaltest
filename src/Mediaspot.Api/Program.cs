@@ -1,6 +1,7 @@
 using Mediaspot.Api;
 using Mediaspot.Api.ExceptionHandling;
 using Mediaspot.Infrastructure.Persistence;
+using Mediaspot.Infrastructure.Queuing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
-builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("Database")!);
+builder.Services.AddPersistence(builder.Configuration.GetConnectionString("Database")!);
+builder.Services.AddQueueing(builder.Configuration.GetConnectionString("Queuing")!);
 
 var app = builder.Build();
 

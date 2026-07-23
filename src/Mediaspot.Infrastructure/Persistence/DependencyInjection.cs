@@ -11,7 +11,7 @@ namespace Mediaspot.Infrastructure.Persistence;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
+    public static IServiceCollection AddPersistence(this IServiceCollection services, string connectionString)
     {
         services.AddDbContext<MediaspotDbContext>(options => options.UseNpgsql(connectionString));
         services.AddScoped<IUnitOfWork,UnitOfWork>();
