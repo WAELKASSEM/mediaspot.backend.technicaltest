@@ -12,7 +12,7 @@ using Projects;
 [SetUpFixture]
 public class AspireSingletonFeature
 {
-    public static HttpClient ApiClient = default!;
+    public static HttpClient ApiClient { get; private set; } = default!;
     private static DistributedApplication app;
 
     [OneTimeSetUp]
@@ -22,6 +22,7 @@ public class AspireSingletonFeature
         app = await appHost.BuildAsync();
         await app.StartAsync();
         ApiClient = app.CreateHttpClient("mediaspot-api");
+        
 
     }
 

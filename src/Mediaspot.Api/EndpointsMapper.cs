@@ -1,5 +1,6 @@
 ﻿using Mediaspot.Api.Assets;
 using Mediaspot.Api.Titles;
+using Mediaspot.Api.TranscodeJobs;
 
 namespace Mediaspot.Api;
 
@@ -10,6 +11,7 @@ public static class EndpointsMapper
     {
         endpoints.MapAssetsEndpoints();
         endpoints.MapTitlesEndpoints();
+        endpoints.MapTranscodeJobsEndpoints();
         return endpoints;
     }
 }

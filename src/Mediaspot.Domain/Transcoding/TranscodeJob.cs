@@ -16,6 +16,8 @@ public sealed class TranscodeJob : AggregateRoot
 
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
+    public string? FailureReason { get; private set; }
+
 
     private TranscodeJob()
     {
@@ -57,7 +59,8 @@ public sealed class TranscodeJob : AggregateRoot
         if (Status != TranscodeStatus.Running)
             throw InvalidTranscodeStatusException.OnlyRunningJobsCanBeMarkedAsFailed(Id, Status);
         Status = TranscodeStatus.Failed;
+        FailureReason = reason;
         UpdatedAt = DateTime.UtcNow;
-        Raise(new TranscodeJobFailed(Id,reason));
+        Raise(new TranscodeJobFailed(Id, reason));
     }
 }

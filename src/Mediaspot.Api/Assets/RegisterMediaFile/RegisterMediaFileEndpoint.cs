@@ -15,12 +15,11 @@ this IEndpointRouteBuilder endpoints)
 
         return endpoints;
     }
-    private static async Task<IResult> RegisterMediaFileAsync([FromRoute] Guid id,
-        [FromQuery] string path,
-        [FromQuery] double durationSeconds,
-        [FromServices] ISender sender)
+    private static async Task<IResult> RegisterMediaFileAsync([FromRoute] Guid id, [FromBody] RegisterMediaFileDto dto, [FromServices] ISender sender)
     {
-        return Results.Ok(new { mediaFileId = await sender.Send(new RegisterMediaFileCommand(id, path, durationSeconds)) });
+        var command = new RegisterMediaFileCommand(id, dto.Path, dto.DurationSeconds);
+        Guid mediaFileId = await sender.Send(command);
+        return Results.Ok(mediaFileId);
     }
 
 }

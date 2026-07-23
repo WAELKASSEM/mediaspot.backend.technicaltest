@@ -16,7 +16,8 @@ public sealed class TranscodeJobRepository(MediaspotDbContext db) : ITranscodeJo
 
     public Task UpdateAsync(TranscodeJob job, CancellationToken ct)
     {
-        db.TranscodeJobs.Attach(job);
+        var entry = db.TranscodeJobs.Attach(job);
+        entry.State = EntityState.Modified;
         return Task.CompletedTask;
     }
 
