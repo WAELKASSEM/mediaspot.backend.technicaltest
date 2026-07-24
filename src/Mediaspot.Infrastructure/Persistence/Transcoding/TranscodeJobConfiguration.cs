@@ -17,5 +17,9 @@ internal sealed class TranscodeJobConfiguration : IEntityTypeConfiguration<Trans
             .IsRequired();
         b.Property(j => j.Status);
         b.HasIndex(j => new { j.AssetId, j.Status });
+        b.Property(x => x.Version)
+         .IsRowVersion()
+         .HasColumnName("xmin");
+
     }
 }

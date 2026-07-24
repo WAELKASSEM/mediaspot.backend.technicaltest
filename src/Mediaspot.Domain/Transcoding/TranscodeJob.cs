@@ -17,7 +17,7 @@ public sealed class TranscodeJob : AggregateRoot
     public DateTime CreatedAt { get; private set; }
     public DateTime? UpdatedAt { get; private set; }
     public string? FailureReason { get; private set; }
-
+    public uint Version { get; set; }
 
     private TranscodeJob()
     {

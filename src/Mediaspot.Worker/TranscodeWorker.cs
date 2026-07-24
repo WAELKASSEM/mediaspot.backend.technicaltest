@@ -1,10 +1,5 @@
 ﻿using Mediaspot.Application.Common;
-using Mediaspot.Application.Transcoding.Commands.CompleteJob;
-using Mediaspot.Application.Transcoding.Commands.FailJob;
-using Mediaspot.Application.Transcoding.Commands.StartJob;
-using Mediaspot.Domain.Transcoding;
 using Mediaspot.Infrastructure.Transcoding;
-using MediatR;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -19,7 +14,6 @@ public sealed class TranscodeWorker(
     IAssetRepository assetRepository,
     AssetTranscoderFactory transcoderFactory,
     MediaSpotApiClient mediaSpotApiClient,
-    ISender sender,
     ILogger<TranscodeWorker> logger)
 {
 
@@ -67,20 +61,18 @@ public sealed class TranscodeWorker(
                 "Processing transcode job {JobId}",
                 jobId);
 
-            var job = await transcodeJobRepository.GetAsync(jobId);
+            var job = (await transcodeJobRepository.GetAsync(jobId,ct))!;
 
 
-            var startResult = await mediaSpotApiClient.PutAsync($"/transcode-jobs/{job.Id}/start");
+            var startResult = await mediaSpotApiClient.PutAsync($"/transcode-jobs/{jobId}/start",ct);
             startResult.EnsureSuccessStatusCode();
 
             var asset =
                 await assetRepository.GetAsync(
                     job.AssetId,
-                    ct);
-
-            if (asset is null)
-                throw new InvalidOperationException(
+                    ct) ?? throw new InvalidOperationException(
                     $"Asset '{job.AssetId}' not found.");
+
 
             var transcoder =
                 transcoderFactory.Resolve(asset);
@@ -90,7 +82,7 @@ public sealed class TranscodeWorker(
                 job,
                 ct);
 
-            var completeResult = await mediaSpotApiClient.PutAsync($"/transcode-jobs/{job.Id}/complete");
+            var completeResult = await mediaSpotApiClient.PutAsync($"/transcode-jobs/{job.Id}/complete",ct);
             completeResult.EnsureSuccessStatusCode();
 
             logger.LogInformation(
@@ -104,7 +96,7 @@ public sealed class TranscodeWorker(
                 "Error while processing job {JobId}",
                 jobId);
 
-            await mediaSpotApiClient.PutAsync($"/transcode-jobs/{jobId}/failed");
+            await mediaSpotApiClient.PutAsync($"/transcode-jobs/{jobId}/failed",ct);
         }
 
     }
