@@ -14,11 +14,8 @@ var webapi = builder.AddProject<Projects.Mediaspot_Api>("mediaspot-api")
 var worker = builder.AddProject<Projects.Mediaspot_Worker>("mediaspot-worker")
              .WithReference(rabbitmq)
              .WithReference(webapi)
-             .WithReference(database)
              .WaitFor(rabbitmq)
-             .WaitFor(webapi)
-             .WaitFor(database);
-
+             .WaitFor(webapi);
 
 await builder.Build().RunAsync(CancellationToken.None);
 

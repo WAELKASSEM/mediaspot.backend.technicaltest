@@ -1,5 +1,7 @@
 ﻿using Mediaspot.Application.Assets.Queries.GetById;
 using Mediaspot.Domain.Assets;
+using Mediaspot.Domain.Assets.AudioAssets;
+using Mediaspot.Domain.Assets.VideoAssets;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,7 +21,11 @@ public static class GetAssetByIdEndpoint
     private static async Task<IResult> GetAssetByIdAsync([FromRoute] Guid id, [FromServices] ISender sender)
     {
         Asset asset = await sender.Send(new GetAssetByIdQuery(id));
-        return Results.Ok(asset);
-
+        return asset switch
+        {
+            VideoAsset va => Results.Ok(va.ToDto()),
+            AudioAsset aa => Results.Ok(aa.ToDto()),
+            _ => Results.NotFound()
+        };
     }
 }

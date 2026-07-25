@@ -1,6 +1,5 @@
-﻿using Mediaspot.Infrastructure.Persistence;
-using Mediaspot.Infrastructure.Transcoding;
-using Mediaspot.Worker;
+﻿using Mediaspot.Worker;
+using Mediaspot.Worker.Transcoders;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,10 +11,9 @@ var connectionString = builder.Configuration.GetConnectionString("Database")!;
 var rabbitMqConnectionString = builder.Configuration.GetConnectionString("Queuing")!;
 var apiBaseUrl = Environment.GetEnvironmentVariable("MEDIASPOT_API_HTTPS")!;
 
-
-builder.Services.AddHttpClient<MediaSpotApiClient>(client =>
+builder.Services.AddHttpClient("ApiClient", c =>
 {
-    client.BaseAddress = new Uri(apiBaseUrl);
+    c.BaseAddress = new Uri(apiBaseUrl);
 });
 
 
@@ -31,7 +29,6 @@ builder.Services.AddTransient<TranscodeWorker>();
 builder.Services.AddTransient<AudioAssetTranscoder>();
 builder.Services.AddTransient<VideoAssetTranscoder>();
 builder.Services.AddTransient<AssetTranscoderFactory>();
-builder.Services.AddPersistence(connectionString);
 
 
 

@@ -25,9 +25,6 @@ public sealed class TitleConfiguration : IEntityTypeConfiguration<Title>
         builder.HasIndex(x => x.Name)
             .IsUnique();
 
-
-
-
         builder.Property(x => x.Description)
             .HasConversion(
                 description => description == null ? null : description.Value,

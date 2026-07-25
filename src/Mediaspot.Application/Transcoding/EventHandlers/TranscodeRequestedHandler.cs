@@ -1,5 +1,4 @@
-﻿using Mediaspot.Application.Common;
-using Mediaspot.Domain.Transcoding.Events;
+﻿using Mediaspot.Domain.Transcoding.Events;
 using MediatR;
 
 namespace Mediaspot.Application.Transcoding.EventHandlers;
