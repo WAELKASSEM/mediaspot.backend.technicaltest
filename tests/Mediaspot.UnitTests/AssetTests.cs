@@ -1,27 +1,31 @@
 using Mediaspot.Domain.Assets;
-using Mediaspot.Domain.Assets.ValueObjects;
 using Mediaspot.Domain.Assets.Events;
+using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.Domain.Assets.VideoAssets;
+using Mediaspot.Domain.Assets.VideoAssets.Events;
+using Mediaspot.Domain.Assets.VideoAssets.ValueObjects;
 using Shouldly;
 
 namespace Mediaspot.UnitTests;
 
 public class AssetTests
 {
+    private VideoAsset @default = new VideoAsset("ext", new Metadata("t", null, null), new Duration(TimeSpan.FromHours(2)), Resolution.QHD, 30, "H.264");
+
     [Fact]
     public void Constructor_Should_Set_Properties_And_Raise_AssetCreated()
     {
         var metadata = new Metadata("title", "desc", "en");
-        var asset = new Asset("ext-1", metadata);
-
+        var asset = new VideoAsset("ext-1", metadata, new Duration(TimeSpan.FromHours(2)), Resolution.QHD, 30, "H.264"); ;
         asset.ExternalId.ShouldBe("ext-1");
         asset.Metadata.ShouldBe(metadata);
-        asset.DomainEvents.OfType<AssetCreated>().Any(ac => ac.AssetId == asset.Id).ShouldBeTrue();
+        asset.DomainEvents.OfType<VideoAssetCreated>().Any(ac => ac.AssetId == asset.Id).ShouldBeTrue();
     }
 
     [Fact]
     public void RegisterMediaFile_Should_Add_File_And_Raise_Event()
     {
-        var asset = new Asset("ext-2", new Metadata("t", null, null));
+        var asset = @default;
         var path = new FilePath("/file.mp4");
         var duration = Duration.FromSeconds(10);
 
@@ -34,7 +38,7 @@ public class AssetTests
     [Fact]
     public void UpdateMetadata_Should_Set_Metadata_And_Raise_Event()
     {
-        var asset = new Asset("ext-3", new Metadata("t", null, null));
+        var asset = @default;
         var newMeta = new Metadata("new", "d", "fr");
 
         asset.UpdateMetadata(newMeta);
@@ -46,7 +50,7 @@ public class AssetTests
     [Fact]
     public void UpdateMetadata_Should_Throw_If_Title_Empty()
     {
-        var asset = new Asset("ext-4", new Metadata("t", null, null));
+        var asset = @default;
         var invalid = new Metadata("", null, null);
 
         Should.Throw<ArgumentException>(() => asset.UpdateMetadata(invalid));
@@ -55,7 +59,7 @@ public class AssetTests
     [Fact]
     public void Archive_Should_Set_Archived_And_Raise_Event()
     {
-        var asset = new Asset("ext-5", new Metadata("t", null, null));
+        var asset = @default;
         asset.Archive(_ => false);
 
         asset.Archived.ShouldBeTrue();
@@ -65,14 +69,14 @@ public class AssetTests
     [Fact]
     public void Archive_Should_Throw_If_ActiveJobs()
     {
-        var asset = new Asset("ext-6", new Metadata("t", null, null));
+        var asset = @default;
         Should.Throw<InvalidOperationException>(() => asset.Archive(_ => true));
     }
 
     [Fact]
     public void Archive_Should_Be_Idempotent()
     {
-        var asset = new Asset("ext-7", new Metadata("t", null, null));
+        var asset = @default;
         asset.Archive(_ => false);
         asset.Archive(_ => false);
         asset.Archived.ShouldBeTrue();

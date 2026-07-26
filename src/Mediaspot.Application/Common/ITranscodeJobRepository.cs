@@ -2,8 +2,8 @@
 
 namespace Mediaspot.Application.Common;
 
-public interface ITranscodeJobRepository
+public interface ITranscodeJobRepository : IRepository<TranscodeJob>
 {
-    Task AddAsync(TranscodeJob job, CancellationToken ct);
+    Task<TranscodeJob?> GetNextPendingAsync(CancellationToken ct);
     Task<bool> HasActiveJobsAsync(Guid assetId, CancellationToken ct);
 }

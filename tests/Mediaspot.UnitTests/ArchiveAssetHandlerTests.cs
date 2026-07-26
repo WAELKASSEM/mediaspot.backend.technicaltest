@@ -2,6 +2,8 @@ using Mediaspot.Application.Assets.Commands.Archive;
 using Mediaspot.Application.Common;
 using Mediaspot.Domain.Assets;
 using Mediaspot.Domain.Assets.ValueObjects;
+using Mediaspot.Domain.Assets.VideoAssets;
+using Mediaspot.Domain.Assets.VideoAssets.ValueObjects;
 using Moq;
 using Shouldly;
 
@@ -12,7 +14,7 @@ public class ArchiveAssetHandlerTests
     [Fact]
     public async Task Handle_Should_Archive_Asset_And_Save()
     {
-        var asset = new Asset("ext", new Metadata("t", null, null));
+        var asset = new VideoAsset("ext", new Metadata("t", null, null),new Duration(TimeSpan.FromHours(2)), Resolution.QHD,30, "H.264");
         var repo = new Mock<IAssetRepository>();
         var jobs = new Mock<ITranscodeJobRepository>();
         var uow = new Mock<IUnitOfWork>();
@@ -44,7 +46,7 @@ public class ArchiveAssetHandlerTests
     [Fact]
     public async Task Handle_Should_Throw_If_ActiveJobs()
     {
-        var asset = new Asset("ext", new Metadata("t", null, null));
+        var asset = new VideoAsset("ext", new Metadata("t", null, null), new Duration(TimeSpan.FromHours(2)), Resolution.QHD, 30, "H.264");
         var repo = new Mock<IAssetRepository>();
         var jobs = new Mock<ITranscodeJobRepository>();
         var uow = new Mock<IUnitOfWork>();
