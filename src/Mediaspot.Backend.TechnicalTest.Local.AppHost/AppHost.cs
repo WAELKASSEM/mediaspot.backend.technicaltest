@@ -11,11 +11,17 @@ var webapi = builder.AddProject<Projects.Mediaspot_Api>("mediaspot-api")
         .WithReference(rabbitmq)
         .WaitFor(rabbitmq);
 
-var worker = builder.AddProject<Projects.Mediaspot_Worker>("mediaspot-worker")
-             .WithReference(rabbitmq)
-             .WithReference(webapi)
-             .WaitFor(rabbitmq)
-             .WaitFor(webapi);
+
+var enableWorker = Environment.GetEnvironmentVariable("disableWorker") == null;
+
+if (enableWorker)
+{
+    var worker = builder.AddProject<Projects.Mediaspot_Worker>("mediaspot-worker")
+                 .WithReference(rabbitmq)
+                 .WithReference(webapi)
+                 .WaitFor(rabbitmq)
+                 .WaitFor(webapi);
+}
 
 await builder.Build().RunAsync(CancellationToken.None);
 

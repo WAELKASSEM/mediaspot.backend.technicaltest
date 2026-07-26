@@ -26,8 +26,3 @@ public static class VideoAssetDtoExtensions
         };
     }
 }
-public record AssetDto
-{
-    public Guid Id { get; init;  }
-    public string Type { get; protected init; } = string.Empty;
-}

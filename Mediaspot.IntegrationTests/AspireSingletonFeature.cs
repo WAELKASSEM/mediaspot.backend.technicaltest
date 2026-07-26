@@ -18,6 +18,7 @@ public class AspireSingletonFeature
     [OneTimeSetUp]
     public async Task GlobalSetup()
     {
+        Environment.SetEnvironmentVariable("disableWorker", "true");
         IDistributedApplicationTestingBuilder appHost = await DistributedApplicationTestingBuilder.CreateAsync<Mediaspot_Backend_TechnicalTest_Local_AppHost>();
         app = await appHost.BuildAsync();
         await app.StartAsync();
